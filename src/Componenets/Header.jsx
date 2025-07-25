@@ -3,10 +3,13 @@ import { Badge } from 'react-bootstrap';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 
+
 function Header() {
+  const wishlist = useSelector((state)=>state.wishlistReducer)
   return (
     <>
     <Navbar expand="lg" className="bg-body-tertiary">
@@ -23,7 +26,7 @@ function Header() {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto">
-            <Nav.Link ><Link className='ms-2 align-items-center d-flex ' style={{textDecoration:'none',color:"black",fontWeight:"bold"}} to={'/wishlist'}><i className="fa-solid fa-basket-shopping text-danger"></i>WISHLIST<Badge className='ms-2 rounded' bg="light">10</Badge></Link></Nav.Link>
+            <Nav.Link ><Link className='ms-2 align-items-center d-flex ' style={{textDecoration:'none',color:"black",fontWeight:"bold"}} to={'/wishlist'}><i className="fa-solid fa-basket-shopping text-danger"></i>WISHLIST<Badge className='ms-2 rounded' bg="light">{wishlist.length}</Badge></Link></Nav.Link>
             <Nav.Link ><Link className='ms-2' style={{textDecoration:'none',color:"black",fontWeight:"bold"}} to={'/cart'}><i className="fa-solid fa-cart-shopping text-success"></i>CART<Badge className='ms-2 rounded' bg="light">2</Badge></Link></Nav.Link>
           </Nav>
         </Navbar.Collapse>

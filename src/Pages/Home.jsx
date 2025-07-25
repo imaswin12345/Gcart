@@ -3,11 +3,13 @@ import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import useFetch from '../Hooks/useFetch';
 import { Row,Col } from 'react-bootstrap';
+import { useDispatch } from 'react-redux';
+import { addToWishlist } from '../redux/wishlistSlice';
 
 function Home() {
   const data  = useFetch("https://dummyjson.com/products")
   console.log(data);
-  
+  const dispatch = useDispatch()
   return (
   
   <Row>
@@ -26,7 +28,7 @@ function Home() {
         <h5>$ {product?.price}</h5>
         </Card.Text>
         <div className='d-flex justify-content-between'>
-          <Button className="btn btn-light" variant="primary"><i  className="fa-solid fa-basket-shopping text-danger"></i></Button>
+          <Button onClick={()=>dispatch(addToWishlist(product))} className="btn btn-light" variant="primary"><i  className="fa-solid fa-basket-shopping text-danger"></i></Button>
           <Button className="btn btn-light" variant="primary"><i className="fa-solid fa-cart-shopping text-success"></i></Button>
         </div>
       </Card.Body>
