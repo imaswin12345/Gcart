@@ -33,15 +33,16 @@ function Wishlist() {
     </Card>
   </Col>
 
-        )): <div >
-          <img 
-          style={{marginLeft:"480px"}}
-          src="./cart.png"   
-          alt="" 
-          
+        )):     <div className="text-center">
+          <img
+            style={{ width: '200px', marginBottom: '10px' }}
+            src="./cart.png"
+            alt="Empty cart"
           />
-          <h4 style={{marginLeft:"600px"}} >Your Wishlist is Empty</h4>
-          <Link style={{marginLeft:"700px"}} to={'/'}><Button className='btn btn-primary'>Back to Home</Button></Link>
+          <h4>Your Wishlist is Empty</h4>
+          <Link to={'/'}>
+            <Button className="btn btn-primary mt-2">Back to Home</Button>
+          </Link>
         </div>
       }
     </Row>

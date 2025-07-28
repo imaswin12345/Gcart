@@ -1,50 +1,93 @@
-import React from 'react'
-import { useSelector } from 'react-redux'
-import Button from 'react-bootstrap/Button';
-import Card from 'react-bootstrap/Card';
-import { Row,Col } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { removeFromCart} from '../redux/addtoCartSlice';
+import React, { useEffect, useState } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import Button from 'react-bootstrap/Button'
+import { Row, Col } from 'react-bootstrap'
+import { Link } from 'react-router-dom'
+import { removeFromCart } from '../redux/addtoCartSlice'
 
 function Cart() {
-  const cartArray = useSelector((state)=>state.cartReducer)
-    const dispatch = useDispatch()
-  return (
-     <Row>
-      {
-        cartArray.length>0?
-        cartArray.map((product,index)=>(
-                <Col key={index} className="mb-5" sm={12} md={6} lg={4} xl={3}>
-        
-         <Card style={{width:'18rem',height:'29rem',marginTop:'50px'}} >
-      <Card.Img style={{height:"200px"}} variant="top" src={product?.thumbnail} />
-      <Card.Body>
-        <Card.Title>{product?.title}</Card.Title>
-        <Card.Text>
-        <p>{product.description.slice(0,55)}</p>
-        <h5>$ {product?.price}</h5>
-        </Card.Text>
-        <div className='d-flex justify-content-between'>
-          <Button onClick={()=>dispatch(removeFromCart(product.id))} className="btn btn-danger" variant="primary"><i className="fa-solid fa-trash"></i></Button>
-          
-        </div>
-      </Card.Body>
-    </Card>
-  </Col>
+  const cartArray = useSelector((state) => state.cartReducer)
+  const dispatch = useDispatch()
+  const [total,setTotal] = useState(0)
+  const getCartTool = ()=>{
+    if(cartArray.length>0){
 
-        )): <div >
-          <img 
-          style={{marginLeft:"480px"}}
-          src="./cart.png"   
-          alt="" 
-          
+      setTotal(cartArray.map(item=>item.price).
+    reduce((p1,p2)=>p1+p2))
+
+
+    }else{
+      setTotal(0)
+    }
+  }
+  useEffect(()=>{
+    getCartTool()
+  },[cartArray])
+  return (
+    <div className='container' style={{ marginTop: '100px' }}>
+      {cartArray.length > 0 ? (
+        <Row className="gap-4">
+          <Col md={8} lg={6}>
+            <table className="table table-bordered table-hover">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Product</th>
+                  <th>Image</th>
+                  <th>Price</th>
+                  <th>Options</th>
+                </tr>
+              </thead>
+              <tbody>
+                {cartArray.map((product, index) => (
+                  <tr key={index}>
+                    <td>{index + 1}</td>
+                    <td>{product.title}</td>
+                    <td>
+                      <img
+                        src={product.thumbnail}
+                        alt={product.title}
+                        style={{ width: '50px' }}
+                      />
+                    </td>
+                    <td>${product.price}</td>
+                    <td>
+                      <Button
+                        onClick={() => dispatch(removeFromCart(product.id))}
+                        className="btn btn-danger"
+                      >
+                        <i className="fa-solid fa-trash"></i>
+                      </Button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </Col>
+
+          <Col md={4}>
+            <div className='border p-4 rounded bg-light shadow'>
+              <h3 className='mb-3'>Cart Summary</h3>
+              <p>Total Products: <strong>{cartArray.length}</strong></p>
+              <p>Total: <span className='text-danger fw-bold fs-4'>${total}</span></p>
+              <Button variant='success'>Check Out</Button>
+            </div>
+          </Col>
+        </Row>
+      ) : (
+        <div className="text-center">
+          <img
+            style={{ width: '200px', marginBottom: '10px' }}
+            src="./cart.png"
+            alt="Empty cart"
           />
-          <h4 style={{marginLeft:"630px"}} >Your Cart is Empty</h4>
-          <Link style={{marginLeft:"700px"}} to={'/'}><Button className='btn btn-primary'>Back to Home</Button></Link>
+          <h4>Your Cart is Empty</h4>
+          <Link to={'/'}>
+            <Button className="btn btn-primary mt-2">Back to Home</Button>
+          </Link>
         </div>
-      }
-    </Row>
+      )}
+    </div>
   )
 }
 
